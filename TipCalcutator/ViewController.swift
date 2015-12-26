@@ -53,26 +53,39 @@ class ViewController: UIViewController {
     var valueTipPerson : Float = 0.0
     var tip : Float = 0.0
     var total : Float = 0.0
+    
+    
+    let CurrencyFormat = NSNumberFormatter()
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        tipLabel.text = "$0.00"
-        totalLabel.text = "$0.00"
         
-        tip1Label.text = "$0.0"
-        tip2Label.text = "$0.0"
-        tip3Label.text = "$0.0"
-        tip4Label.text = "$0.0"
-        tip5Label.text = "$0.0"
+        CurrencyFormat.locale = NSLocale.currentLocale()
+        let currencySymbol = CurrencyFormat.currencySymbol
         
-        ValueTipPersonLabel.text = "$0.0"
-        ValueTipTotalLabel.text = "$0.0"
-        ValueTotalPersonLabel.text = "$0.0"
-        ValueToTalLabel.text = "$0.0"
+        tipLabel.text = "\(currencySymbol)0.00"
+        totalLabel.text = "\(currencySymbol)0.00"
+        
+        tip1Label.text = "\(currencySymbol)0.0"
+        tip2Label.text = "\(currencySymbol)0.0"
+        tip3Label.text = "\(currencySymbol)0.0"
+        tip4Label.text = "\(currencySymbol)0.0"
+        tip5Label.text = "\(currencySymbol)0.0"
+        
+        ValueTipPersonLabel.text = "\(currencySymbol)0.0"
+        ValueTipTotalLabel.text = "\(currencySymbol)0.0"
+        ValueTotalPersonLabel.text = "\(currencySymbol)0.0"
+        ValueToTalLabel.text = "\(currencySymbol)0.0"
         
         let defaults = NSUserDefaults.standardUserDefaults()
+        
+        billField.becomeFirstResponder()
+        
+        var frame = billField.frame
+        frame.size.height = 60
+        billField.frame = frame
         
        
         billField.text = defaults.stringForKey("lastAmount")
@@ -204,6 +217,9 @@ class ViewController: UIViewController {
     }
     @IBAction func onSliderChanged(sender: AnyObject) {
         
+        CurrencyFormat.locale = NSLocale.currentLocale()
+        let currencySymbol = CurrencyFormat.currencySymbol
+        
         NumPeople = Int(slider.value)
         
         valueToTPerson = (total / Float(NumPeople))
@@ -214,12 +230,16 @@ class ViewController: UIViewController {
         ValueTipPersonLabel.text = "\(valueTipPerson)"
         NumPPLindicatorLabel.text = "\(NumPeople) ways"
         
-        ValueTotalPersonLabel.text = String(format: "$%.1f/ea", valueToTPerson)
-        ValueTipPersonLabel.text = String(format: "$%.1f/ea", valueTipPerson)
+        ValueTotalPersonLabel.text = String(format: "\(currencySymbol)%.1f/ea", valueToTPerson)
+        ValueTipPersonLabel.text = String(format: "\(currencySymbol)%.1f/ea", valueTipPerson)
     }
 
 
     @IBAction func onEditingChanged(sender: AnyObject) {
+        
+        CurrencyFormat.locale = NSLocale.currentLocale()
+        let currencySymbol = CurrencyFormat.currencySymbol
+        
         var tipPercentages = [lowestTip, midLowTip, midTip, midHighTip, highestTip]
         let tipPercentage = tipPercentages[tipControl.selectedSegmentIndex]
         
@@ -236,24 +256,24 @@ class ViewController: UIViewController {
         let tip4 = billAmount * midHighTip
         let tip5 = billAmount * highestTip
         
-        tipLabel.text = "$\(tip)"
-        totalLabel.text = "$\(total)"
+        tipLabel.text = "\(currencySymbol)\(tip)"
+        totalLabel.text = "\(currencySymbol)\(total)"
         
-        tip1Label.text = "$\(tip1)"
-        tip2Label.text = "$\(tip2)"
-        tip3Label.text = "$\(tip3)"
-        tip4Label.text = "$\(tip4)"
-        tip5Label.text = "$\(tip5)"
+        tip1Label.text = "\(currencySymbol)\(tip1)"
+        tip2Label.text = "\(currencySymbol)\(tip2)"
+        tip3Label.text = "\(currencySymbol)\(tip3)"
+        tip4Label.text = "\(currencySymbol)\(tip4)"
+        tip5Label.text = "\(currencySymbol)\(tip5)"
         
-        ValueTipTotalLabel.text = "$\(tip)"
-        ValueToTalLabel.text = "$\(total)"
+        ValueTipTotalLabel.text = "\(currencySymbol)\(tip)"
+        ValueToTalLabel.text = "\(currencySymbol)\(total)"
         
         
-        tipLabel.text = String(format: "$%.1f", tip)
-        totalLabel.text = String(format: "$%.1f", total)
+        tipLabel.text = String(format: "\(currencySymbol)%.1f", tip)
+        totalLabel.text = String(format: "\(currencySymbol)%.1f", total)
         
-        ValueTipTotalLabel.text = String(format: "$%.1f", tip)
-        ValueToTalLabel.text = String(format: "$%.1f", total)
+        ValueTipTotalLabel.text = String(format: "\(currencySymbol)%.1f", tip)
+        ValueToTalLabel.text = String(format: "\(currencySymbol)%.1f", total)
     }
 
     @IBAction func onTap(sender: AnyObject) {
