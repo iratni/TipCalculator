@@ -81,12 +81,6 @@ class ViewController: UIViewController {
         
         let defaults = NSUserDefaults.standardUserDefaults()
         
-        billField.becomeFirstResponder()
-        
-        var frame = billField.frame
-        frame.size.height = 60
-        billField.frame = frame
-        
        
         billField.text = defaults.stringForKey("lastAmount")
         tipLabel.text = defaults.stringForKey("lasttipAmount")
