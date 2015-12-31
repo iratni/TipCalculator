@@ -44,7 +44,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var NumPPLindicatorLabel: UILabel!
     
-    
+    @IBOutlet weak var View2: UIView!
     
     var totalAmountPerson : Float = 0.0
     var tipAmountPerson : Float = 0.0
@@ -54,16 +54,33 @@ class ViewController: UIViewController {
     var tip : Float = 0.0
     var total : Float = 0.0
     
-    
+    let defaults = NSUserDefaults.standardUserDefaults()
     let CurrencyFormat = NSNumberFormatter()
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        billField.becomeFirstResponder()
+        
+        var frame = billField.frame
+        frame.size.height = 60
+        billField.frame = frame
         
         CurrencyFormat.locale = NSLocale.currentLocale()
         let currencySymbol = CurrencyFormat.currencySymbol
+        
+        
+        
+        
+        if(billField.text == ""){
+            View2.center.y = view.bounds.height * 4 / 3
+            billField.center.y = view.bounds.height / 2.7
+        }else
+        {
+            self.billField.center.y = self.view.bounds.height / 4.7
+            self.View2.center.y = self.view.bounds.height / 3 + self.View2.bounds.height/2
+        }
         
         tipLabel.text = "\(currencySymbol)0.00"
         totalLabel.text = "\(currencySymbol)0.00"
@@ -79,7 +96,7 @@ class ViewController: UIViewController {
         ValueTotalPersonLabel.text = "\(currencySymbol)0.0"
         ValueToTalLabel.text = "\(currencySymbol)0.0"
         
-        let defaults = NSUserDefaults.standardUserDefaults()
+        
         
        
         billField.text = defaults.stringForKey("lastAmount")
@@ -103,16 +120,17 @@ class ViewController: UIViewController {
         
         
             let userDefaults = NSUserDefaults.standardUserDefaults()
-//            var isFirstLoad = userDefaults.boolForKey("is_First_Load")
+
         
         // start
-        let defaultTip = userDefaults.integerForKey("default_tip")
+        let defaultTip = defaults.integerForKey("lasttipControlAmount")
+        // userDefaults.integerForKey("default_tip")
         print("got default tip: \(defaultTip)")
         switch defaultTip {
-        case 0...2:
+        case 0...4:
             tipControl.selectedSegmentIndex = defaultTip
         default:
-            tipControl.selectedSegmentIndex = 0
+            tipControl.selectedSegmentIndex = defaults.integerForKey("lasttipControlAmount")
         }
         // end
         
@@ -230,7 +248,17 @@ class ViewController: UIViewController {
 
 
     @IBAction func onEditingChanged(sender: AnyObject) {
-        
+        if billField.text != ""{
+            UIView.animateWithDuration(0.5, animations: {
+                self.billField.center.y = self.view.bounds.height / 4.6
+                self.View2.center.y = self.view.bounds.height / 3.6 + self.View2.bounds.height/2
+            })
+        }else{
+            UIView.animateWithDuration(0.5, animations: {
+                self.billField.center.y = self.view.bounds.height / 2.1
+                self.View2.center.y = self.view.bounds.height * 4 / 3
+            })
+        }
         CurrencyFormat.locale = NSLocale.currentLocale()
         let currencySymbol = CurrencyFormat.currencySymbol
         
